@@ -1,5 +1,5 @@
 Package.describe({
-  name: 'eg:accounts-ui',
+  name: 'ensemblebd:accounts-ui',
   version: '1.2.24',
   summary: 'Accounts UI for React in Meteor 1.3+',
   git: 'https://github.com/ensemblebd/accounts-ui',

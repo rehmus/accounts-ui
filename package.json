@@ -3,7 +3,7 @@
   "description": "Accounts UI for React Component in Meteor",
   "repository": {
     "type": "git",
-    "url": "https://github.com/studiointeract/accounts-ui.git"
+    "url": "https://github.com/ensemblebd/accounts-ui.git"
   },
   "keywords": [
     "react",
@@ -13,11 +13,14 @@
   "author": "timbrandin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/studiointeract/accounts-ui/issues"
+    "url": "https://github.com/ensemblebd/accounts-ui/issues"
   },
-  "homepage": "https://github.com/studiointeract/accounts-ui",
+  "homepage": "https://github.com/ensemblebd/accounts-ui",
   "dependencies": {
-    "prop-types": "^15.5.8"
+    "prop-types": "^15.5.8",
+    "react": "^15.0.0",
+    "react-addons-pure-render-mixin": "^15.0.0",
+    "react-dom": "^15.0.0"
   },
   "peerDependencies": {
     "react": "^15.0.0",
