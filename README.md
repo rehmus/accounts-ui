@@ -1,6 +1,13 @@
 # React Accounts UI
 
-Current version 1.2.23
+Current version 1.2.24  (community modified pull requests)  
+This repo is a fork of master by studiointeract. They do not seem to be properly maintaining their lib, so thus this repo.  
+This too will not be maintained, but it contains everything community - submitted as of Novemeber 2017.  
+  
+To use this, 
+1. Create a local meteor packages folder:   `mkdir ./packages`
+2. clone this repo. `cd ./packages && git clone https://github.com/ensemblebd/accounts-ui.git`  
+Then you can run `meteor add std:accounts-ui`, and it will build and utilize the local repo in favor over the atmosphere package provided by studiointeract. Proceed as usual from there.
 
 ## Features
 
