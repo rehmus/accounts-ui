@@ -635,11 +635,13 @@ class LoginForm extends Component {
         }
         else {
           loginResultCallback(() => this.state.onSignedInHook());
-          this.setState({
-            formState: STATES.PROFILE,
-            password: null,
-          });
-          this.clearDefaultFieldValues();
+          if (!this.props.disableStateChange) {
+            this.setState({
+              formState: STATES.PROFILE,
+              password: null,
+            });
+          }
+            this.clearDefaultFieldValues();
         }
       });
     }
@@ -1012,6 +1014,7 @@ LoginForm.propTypes = {
   resetPasswordPath: PropTypes.string,
   profilePath: PropTypes.string,
   changePasswordPath: PropTypes.string,
+    disableStateChange: PropTypes.bool.isRequired,
 };
 LoginForm.defaultProps = {
   formState: null,
@@ -1020,6 +1023,7 @@ LoginForm.defaultProps = {
   resetPasswordPath: null,
   profilePath: null,
   changePasswordPath: null,
+    disableStateChange: false,
 };
 
 Accounts.ui.LoginForm = LoginForm;
