@@ -634,14 +634,16 @@ class LoginForm extends Component {
           this.showMessage(`error.accounts.${error.reason}` || "unknown_error", 'error');
         }
         else {
-          loginResultCallback(() => this.state.onSignedInHook());
-          if (!this.props.disableStateChange) {
-            this.setState({
-              formState: STATES.PROFILE,
-              password: null,
-            });
-          }
+            if (!this.props.disableStateChange) {
+              this.setState({
+                formState: STATES.PROFILE,
+                password: null,
+              });
+            }
             this.clearDefaultFieldValues();
+            loginResultCallback(() => {
+                Meteor.setTimeout(() => this.state.onSignedInHook(), 100);
+            });
         }
       });
     }
