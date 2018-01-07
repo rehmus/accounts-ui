@@ -109,6 +109,7 @@ class LoginForm extends Component {
     // if (this.props.t) {
     //   return this.props.t(text);
     // }
+      if (typeof(this.props.translateMap[text])!=='undefined') return this.props.translateMap[text];
     return T9n.get(text);
   }
 
@@ -1017,6 +1018,7 @@ LoginForm.propTypes = {
   profilePath: PropTypes.string,
   changePasswordPath: PropTypes.string,
     disableStateChange: PropTypes.bool.isRequired,
+    translateMap: PropTypes.object.isRequired
 };
 LoginForm.defaultProps = {
   formState: null,
@@ -1026,6 +1028,7 @@ LoginForm.defaultProps = {
   profilePath: null,
   changePasswordPath: null,
     disableStateChange: false,
+    translateMap: {}
 };
 
 Accounts.ui.LoginForm = LoginForm;
