@@ -109,7 +109,8 @@ class LoginForm extends Component {
     // if (this.props.t) {
     //   return this.props.t(text);
     // }
-      if (typeof(this.props.translateMap[text])!=='undefined') return this.props.translateMap[text];
+      if (typeof(this.props.translateMap[text])!=='undefined')
+        return (typeof(this.props.translateMap[text])==='function')?this.props.translateMap[text](this.state.formState):this.props.translateMap[text];
     return T9n.get(text);
   }
 
@@ -331,6 +332,7 @@ class LoginForm extends Component {
     if (this.showCreateAccountLink()) {
       loginButtons.push({
         id: 'switchToSignUp',
+        className: 'switchToSignUp',
         label: this.translate('signUp'),
         type: 'link',
         href: signUpPath,
@@ -341,6 +343,7 @@ class LoginForm extends Component {
     if (formState == STATES.SIGN_UP || formState == STATES.PASSWORD_RESET) {
       loginButtons.push({
         id: 'switchToSignIn',
+        className: 'switchToSignIn',
         label: this.translate('signIn'),
         type: 'link',
         href: loginPath,
@@ -351,6 +354,7 @@ class LoginForm extends Component {
     if (this.showForgotPasswordLink()) {
       loginButtons.push({
         id: 'switchToPasswordReset',
+        className: 'switchToPasswordReset',
         label: this.translate('forgotPassword'),
         type: 'link',
         href: resetPasswordPath,
@@ -398,6 +402,7 @@ class LoginForm extends Component {
     if (formState == STATES.PASSWORD_RESET) {
       loginButtons.push({
         id: 'emailResetLink',
+        className: 'emailResetLink',
         label: this.translate('resetYourPassword'),
         type: 'submit',
         disabled: waiting,
@@ -408,6 +413,7 @@ class LoginForm extends Component {
     if (this.showPasswordChangeForm() || this.showEnrollAccountForm()) {
       loginButtons.push({
         id: 'changePassword',
+        className: 'changePassword',
         label: (this.showPasswordChangeForm() ? this.translate('changePassword') : this.translate('setPassword')),
         type: 'submit',
         disabled: waiting,
@@ -417,6 +423,7 @@ class LoginForm extends Component {
       if (Accounts.user()) {
         loginButtons.push({
           id: 'switchToSignOut',
+          className: 'switchToSignOut',
           label: this.translate('cancel'),
           type: 'link',
           href: profilePath,
@@ -425,6 +432,7 @@ class LoginForm extends Component {
       } else {
         loginButtons.push({
           id: 'cancelResetPassword',
+          className: 'cancelResetPassword',
           label: this.translate('cancel'),
           type: 'link',
           onClick: this.cancelResetPassword.bind(this),
