@@ -98,6 +98,9 @@ class LoginForm extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+      if (typeof(this.props.notifyStateChange)==='function') {
+          this.props.notifyStateChange(this.state.formState);
+      }
     if (!prevProps.user !== !this.props.user) {
       this.setState({
         formState: this.props.user ? STATES.PROFILE : STATES.SIGN_IN
