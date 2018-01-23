@@ -1007,13 +1007,17 @@ class LoginForm extends Component {
       deprecated: true,
       message: messages.map(({ message }) => message).join(', '),
     };
+    let useR16Portal = React.version.startsWith("16");
+    if (!useR16Portal) {
+        ReactDOM.unstable_renderSubtreeIntoContainer(this, <Accounts.ui.Field id="uid-account" />, this._container);
+    }
     return (
         <div>
-            {
+            {(useR16Portal)?
                 ReactDOM.createPortal(
                     <Accounts.ui.Field id="uid-account" />,
                     this._container
-                )
+                ): ""
             }
             <Accounts.ui.Form
                 oauthServices={this.oauthButtons()}
