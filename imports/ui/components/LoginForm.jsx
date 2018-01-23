@@ -81,6 +81,10 @@ class LoginForm extends Component {
         Session.set(KEY_PREFIX + 'state', null);
         break;
     }
+      if (this._container.getElementsByClassName('message').length === 0) {
+          // Found backwards compatibility issue with 1.3.x
+          console.warn(`Implementations of Accounts.ui.Field must render message in v1.2.11. https://github.com/studiointeract/accounts-ui/#deprecations`);
+      }
 
     // Add default field values once the form did mount on the client
     this.setState(prevState => ({
@@ -983,16 +987,10 @@ class LoginForm extends Component {
   }
 
   componentWillMount() {
-    // XXX Check for backwards compatibility.
-    if (Meteor.isClient) {
-      const container = document.createElement('div');
-      ReactDOM.unstable_renderSubtreeIntoContainer(this, <Accounts.ui.Field id="uid-account" />, container);
-      if (container.getElementsByClassName('message').length == 0) {
-        // Found backwards compatibility issue with 1.3.x
-        console.warn(`Implementations of Accounts.ui.Field must render message in v1.2.11.
-          https://github.com/studiointeract/accounts-ui/#deprecations`);
+      if (Meteor.isClient) {
+          this._container = document.createElement('div');
+
       }
-    }
   }
 
   componentWillUnmount() {
@@ -1010,14 +1008,22 @@ class LoginForm extends Component {
       message: messages.map(({ message }) => message).join(', '),
     };
     return (
-      <Accounts.ui.Form
-        oauthServices={this.oauthButtons()}
-        fields={this.fields()} 
-        buttons={this.buttons()}
-        {...this.state}
-        message={message}
-        translate={text => this.translate(text)}
-      />
+        <div>
+            {
+                ReactDOM.createPortal(
+                    <Accounts.ui.Field id="uid-account" />,
+                    this._container
+                )
+            }
+            <Accounts.ui.Form
+                oauthServices={this.oauthButtons()}
+                fields={this.fields()}
+                buttons={this.buttons()}
+                {...this.state}
+                message={message}
+                translate={text => this.translate(text)}
+            />
+        </div>
     );
   }
 }
