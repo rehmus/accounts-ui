@@ -184,7 +184,8 @@ class LoginForm extends Component {
     return {
       id: 'password',
       hint: this.translate('enterPassword'),
-      label: this.translate('password'),
+      label: (this.state.formState === STATES.PASSWORD_CHANGE ? this.translate('currentPassword') 
+                  : this.translate('password')),
       type: 'password',
       required: true,
       defaultValue: this.state.password || "",
@@ -647,19 +648,15 @@ class LoginForm extends Component {
       Meteor.loginWithPassword(loginSelector, password, (error, result) => {
         onSubmitHook(error,formState);
         if (error) {
-          this.showMessage(`error.accounts.${error.reason}` || "unknown_error", 'error');
+          this.showMessage(`error.accounts.loginError` || "unknown_error", 'error');
         }
         else {
-            if (!this.props.disableStateChange) {
-              this.setState({
-                formState: STATES.PROFILE,
-                password: null,
-              });
-            }
-            this.clearDefaultFieldValues();
-            loginResultCallback(() => {
-                Meteor.setTimeout(() => this.state.onSignedInHook(), 100);
+            loginResultCallback(() => this.state.onSignedInHook());
+            this.setState({
+              formState: STATES.PROFILE,
+              password: null,
             });
+            this.clearDefaultFieldValues();
         }
       });
     }
@@ -789,7 +786,7 @@ class LoginForm extends Component {
         }
         else {
           onSubmitHook(null, formState);
-          this.setState({ formState: STATES.PROFILE, password: null });
+          this.setState({ formState: STATES.SIGN_IN, password: null });
           let user = Accounts.user();
           loginResultCallback(this.state.onPostSignUpHook.bind(this, _options, user));
           this.clearDefaultFieldValues();
@@ -923,7 +920,7 @@ class LoginForm extends Component {
         else {
           this.showMessage(this.translate('info.passwordChanged'), 'success', 5000);
           onSubmitHook(null, formState);
-          this.setState({ formState: STATES.PROFILE });
+          //this.setState({ formState: STATES.PROFILE });
           Accounts._loginButtonsSession.set('resetPasswordToken', null);
           Accounts._loginButtonsSession.set('enrollAccountToken', null);
           onSignedInHook();
@@ -939,7 +936,7 @@ class LoginForm extends Component {
         else {
           this.showMessage('info.passwordChanged', 'success', 5000);
           onSubmitHook(null, formState);
-          this.setState({ formState: STATES.PROFILE });
+          //this.setState({ formState: STATES.PROFILE });
           this.clearDefaultFieldValues();
         }
       });
