@@ -648,7 +648,11 @@ class LoginForm extends Component {
       Meteor.loginWithPassword(loginSelector, password, (error, result) => {
         onSubmitHook(error,formState);
         if (error) {
+          if(error.reason === "You must verify your email address before you can log in") {
+            this.showMessage(`error.accounts.${error.reason}`, 'error');
+          } else {
           this.showMessage(`error.accounts.loginError` || "unknown_error", 'error');
+          }
         }
         else {
             loginResultCallback(() => this.state.onSignedInHook());
@@ -721,7 +725,7 @@ class LoginForm extends Component {
 
   }
 
-  signUp(options = {}) {
+  signUp(options = {}, err = false) {
     const {
       username = null,
       email = null,
@@ -730,8 +734,11 @@ class LoginForm extends Component {
       formState,
       onSubmitHook
     } = this.state;
-    let error = false;
-    this.clearMessages();
+    let error = err;
+    
+    if(!error) {
+      this.clearMessages();
+    }
 
     if (username !== null) {
       if ( !this.validateField('username', username) ) {
@@ -776,12 +783,13 @@ class LoginForm extends Component {
     const SignUp = function(_options) {
       Accounts.createUser(_options, (error) => {
         if (error) {
-          this.showMessage(`error.accounts.${error.reason}` || "unknown_error", 'error');
-          if (this.translate(`error.accounts.${error.reason}`)) {
-            onSubmitHook(`error.accounts.${error.reason}`, formState);
-          }
-          else {
-            onSubmitHook("unknown_error", formState);
+          console.log(error);
+          text = `error.accounts.${error.reason}` || "unknown_error";
+          this.showMessage(text, 'error');
+          onSubmitHook(text, formState);
+          if(error.reason === "You must verify your email address before you can log in") {
+            this.setState({formState: STATES.SIGN_IN});
+            this.clearDefaultFieldValues();
           }
         }
         else {
@@ -792,7 +800,7 @@ class LoginForm extends Component {
           this.clearDefaultFieldValues();
         }
 
-        this.setState({ waiting: false });
+        this.setState({ waiting: false});
       });
     };
 
@@ -1049,7 +1057,7 @@ LoginForm.defaultProps = {
     translateMap: {}
 };
 
-Accounts.ui.LoginForm = LoginForm;
+Accounts.ui.LoginFormBody = LoginForm;
 
 const LoginFormContainer = withTracker(() => {
   // Listen for the user to login/logout and the services list to the user.
@@ -1059,5 +1067,6 @@ const LoginFormContainer = withTracker(() => {
   });
 })(LoginForm);
 Accounts.ui.LoginForm = LoginFormContainer;
+
 export default LoginFormContainer;
 
