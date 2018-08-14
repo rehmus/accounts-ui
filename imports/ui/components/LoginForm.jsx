@@ -783,14 +783,13 @@ class LoginForm extends Component {
     const SignUp = function(_options) {
       Accounts.createUser(_options, (error) => {
         if (error) {
-          console.log(error);
           text = `error.accounts.${error.reason}` || "unknown_error";
           this.showMessage(text, 'error');
           onSubmitHook(text, formState);
-          if(error.reason === "You must verify your email address before you can log in") {
+          /*if(error.reason === "You must verify your email address before you can log in") {
             this.setState({formState: STATES.SIGN_IN});
             this.clearDefaultFieldValues();
-          }
+          }*/
         }
         else {
           onSubmitHook(null, formState);
